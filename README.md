@@ -51,12 +51,7 @@ const routes = HttpRouter.empty.pipe(
           {
             // Options for react-dom/server.renderToReadableStream
             // e.g., bootstrapScripts: ["/main.js"],
-            onShellReady() {
-              console.log("React shell is ready to be sent!");
-            },
-            onAllReady() {
-              console.log("React stream is fully complete!");
-            }
+            identifierPrefix: "react-option-example",
             // Note: streamReactNode manages its own `onError` for logging.
           },
           {
