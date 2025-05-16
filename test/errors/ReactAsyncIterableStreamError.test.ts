@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { ReactAsyncIterableStreamError } from "../../src/errors/ReactAsyncIterableStreamError";
+import { ReactAsyncIterableStreamError } from "@/errors/ReactAsyncIterableStreamError";
 
 test("ReactAsyncIterableStreamError correctly instancated", () => {
   const streamError = new ReactAsyncIterableStreamError(new Error("test"));

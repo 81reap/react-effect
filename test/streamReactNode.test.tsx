@@ -1,6 +1,6 @@
 import { expect, test, mock } from "bun:test";
 import { Effect } from "effect";
-import { streamReactNode } from "../src/streamReactNode";
+import { streamReactNode } from "@/streamReactNode";
 
 // Mock react-dom/server
 const mockReadableStream = {

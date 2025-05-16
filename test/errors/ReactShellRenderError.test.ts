@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { ReactShellRenderError } from "../../src/errors/ReactShellRenderError";
+import { ReactShellRenderError } from "@/errors/ReactShellRenderError";
 
 test("ReactShellRenderError correctly instancated", () => {
   const streamError = new ReactShellRenderError(new Error("test"));

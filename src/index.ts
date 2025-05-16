@@ -1,1 +1,1 @@
-export * from "./streamReactNode";
+export * from "@/streamReactNode";

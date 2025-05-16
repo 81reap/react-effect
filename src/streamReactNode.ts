@@ -5,8 +5,8 @@ import {
   renderToReadableStream,
   type RenderToReadableStreamOptions,
 } from "react-dom/server";
-import { ReactShellRenderError } from "./errors/ReactShellRenderError";
-import { ReactAsyncIterableStreamError } from "./errors/ReactAsyncIterableStreamError";
+import { ReactShellRenderError } from "@/errors/ReactShellRenderError";
+import { ReactAsyncIterableStreamError } from "@/errors/ReactAsyncIterableStreamError";
 
 /**
  * Streams a ReactNode to an HttpServerResponse, suitable for React Server Components (RSC)
