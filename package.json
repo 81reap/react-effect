@@ -1,0 +1,55 @@
+{
+  "name": "react-effect",
+  "version": "0.1.0",
+  "description": "A React library for working with Effect-TS",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build": "bun build --outdir dist --target node16 --format cjs,esm --types",
+    "test": "bun test"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "effect",
+    "effect-ts",
+    "react",
+    "ssr",
+    "streaming",
+    "rsc",
+    "server components"
+  ],
+  "author": "Prayag Bhakar <@81reap>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/81reap/react-effect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/81reap/react-effect/issues"
+  },
+  "homepage": "https://github.com/81reap/react-effect#readme",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5"
+  },
+  "peerDependencies": {
+    "@effect/platform": "^0.82.3",
+    "effect": "^3.15.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5"
+  }
+}
