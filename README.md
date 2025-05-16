@@ -10,44 +10,75 @@ bun add --dev @types/react @types/react-dom
 ```
 
 ```typescript
-import { HttpRouter } from "@effect/platform";
+import { HttpRouter, HttpServer, HttpServerResponse } from "@effect/platform";
+import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
+import { Effect, Layer } from "effect";
+import * as React from "react";
 import { streamReactNode } from "react-effect";
 
-// A simple React component for server rendering
-// Ensure it renders a full HTML structure if it's the root.
-function PageComponent(props: { title: string; message: string }) {
-  return (
-    <html>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{props.title}</title>
-        {/* <link rel="stylesheet" href="/styles.css"></link> */}
-      </head>
-      <body>
-        <h1>{props.message}</h1>
-        <div id="root"></div> {/* For client-side hydration target */}
-        {/* note: Bootstrap scripts can be added via options */}
-      </body>
-    </html>
-  );
-}
+// A simple React component
+const App = ({ name }: { name: string }) => (
+  <html>
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Effect React Stream</title>
+    </head>
+    <body>
+      <h1>Hello, {name}!</h1>
+      <p>This is streamed from the server using Effect-TS and React.</p>
+      {/* Example of a component that might suspend (for demo) */}
+      {/* <React.Suspense fallback={<p>Loading user data...</p>}>
+        <UserData />
+      </React.Suspense> */}
+    </body>
+  </html>
+);
 
-export const reactRoutes = HttpRouter.empty.pipe(
+// Example of a component that might suspend (if you use React.Suspense)
+// const UserData = React.lazy(async () => {
+//   await new Promise(resolve => setTimeout(resolve, 1000));
+//   return { default: () => <p>User data loaded!</p> };
+// });
+
+const routes = HttpRouter.empty.pipe(
   HttpRouter.get(
     "/",
-    streamReactNode(<PageComponent title="Home Page" message="Hello from React and Effect!" />, {})
-  ),
-  HttpRouter.get(
-    "/another",
-    streamReactNode(
-      <PageComponent title="Another Page" message="This is another streamed page!" />,
-      {
-        identifierPrefix: "react-option-example",
-      }
+    Effect.succeed(React.createElement(App, { name: "Effect User" })).pipe(
+      Effect.flatMap((reactNode) =>
+        streamReactNode(
+          reactNode,
+          {
+            // Options for react-dom/server.renderToReadableStream
+            // e.g., bootstrapScripts: ["/main.js"],
+            onShellReady() {
+              console.log("React shell is ready to be sent!");
+            },
+            onAllReady() {
+              console.log("React stream is fully complete!");
+            }
+            // Note: streamReactNode manages its own `onError` for logging.
+          },
+          {
+            // Optional: custom status and headers for the HTTP response
+            status: 200,
+            headers: { "x-custom-streaming-header": "active" },
+          }
+        )
+      )
     )
   )
 );
+
+const AppLive = HttpServer.router.empty.pipe(
+  HttpServer.router.add(routes),
+  HttpServer.server.serve(),
+  Layer.provide(NodeHttpServer.layer({ port: 3000 }))
+);
+
+NodeRuntime.runMain(Layer.launch(AppLive)).then(() => {
+  console.log("Server started on http://localhost:3000");
+});
 ```
 
 ## LICENCE + Contrubutions
