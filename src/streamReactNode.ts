@@ -26,22 +26,6 @@ export class ReactAsyncIterableStreamError {
 }
 
 /**
- * Configuration options for the HTTP response when streaming a ReactNode.
- */
-export interface StreamResponseConfig {
-  /**
-   * HTTP status code for a successful stream.
-   * @default 200
-   */
-  status?: number;
-  /**
-   * HTTP headers for a successful stream. These will be merged with (and can override)
-   * the default `{"content-type": "text/html"}` header.
-   */
-  headers?: HttpServerResponse.HttpServerResponse.Input["headers"];
-}
-
-/**
  * Streams a ReactNode to an HttpServerResponse, suitable for React Server Components (RSC)
  * or general server-side rendering with streaming.
  *
@@ -60,7 +44,7 @@ export interface StreamResponseConfig {
 export function streamReactNode(
   node: ReactNode,
   renderOptions: RenderToReadableStreamOptions,
-  streamConfig: StreamResponseConfig = {}
+  streamConfig: HttpServerResponse.Options = {}
 ): Effect.Effect<HttpServerResponse.HttpServerResponse, never, never> {
   return Effect.tryPromise({
     try: () =>
