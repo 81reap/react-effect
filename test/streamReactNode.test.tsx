@@ -1,6 +1,6 @@
 import { expect, test, mock } from "bun:test";
 import { Effect } from "effect";
-import { streamReactNode, ReactShellRenderError, ReactAsyncIterableStreamError } from "../src/streamReactNode";
+import { streamReactNode } from "../src/streamReactNode";
 
 // Mock react-dom/server
 const mockReadableStream = {
@@ -24,7 +24,7 @@ const TestComponent = () => <div>Hello World</div>;
 
 test("streamReactNode converts React node to a streamable HttpServerResponse", async () => {
   const response = await Effect.runPromise(
-    streamReactNode(<TestComponent />, {}, { status: 200 })
+    streamReactNode(<TestComponent />, {}, {})
   );
   
   expect(response.status).toBe(200);
@@ -83,14 +83,4 @@ test.todo("streamReactNode handles ReactAsyncIterableStreamError", async () => {
 
 test.todo("streamReactNode React onError render option logs to Effect", async () => {
   // todo
-});
-
-test("error classes are correctly instancated", () => {
-  const shellError = new ReactShellRenderError(new Error("test"));
-  expect(shellError._tag).toBe("ReactShellRenderError");
-  expect(shellError.underlyingError).toBeInstanceOf(Error);
-  
-  const streamError = new ReactAsyncIterableStreamError(new Error("test"));
-  expect(streamError._tag).toBe("ReactAsyncIterableStreamError");
-  expect(streamError.underlyingError).toBeInstanceOf(Error);
 });

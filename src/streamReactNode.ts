@@ -5,25 +5,8 @@ import {
   renderToReadableStream,
   type RenderToReadableStreamOptions,
 } from "react-dom/server";
-
-/**
- * Error type for failures occurring during the initial shell rendering phase
- * of the React stream (i.e., when `renderToReadableStream` promise rejects).
- */
-export class ReactShellRenderError {
-  readonly _tag = "ReactShellRenderError";
-  constructor(readonly underlyingError: unknown) {}
-}
-
-/**
- * Error type for failures occurring within the async iterable stream
- * after the initial React shell has been successfully rendered and sent.
- * These errors are typically caught from the ReadableStream's async iterator.
- */
-export class ReactAsyncIterableStreamError {
-  readonly _tag = "ReactAsyncIterableStreamError";
-  constructor(readonly underlyingError: unknown) {}
-}
+import { ReactShellRenderError } from "./errors/ReactShellRenderError";
+import { ReactAsyncIterableStreamError } from "./errors/ReactAsyncIterableStreamError";
 
 /**
  * Streams a ReactNode to an HttpServerResponse, suitable for React Server Components (RSC)
@@ -99,7 +82,7 @@ export function streamReactNode(
     }),
     Effect.catchTags({
       // Handle failure to render the initial shell.
-      ReactShellRenderError: (error) =>
+      ReactShellRenderError: (error: ReactShellRenderError) =>
         Effect.logError(
           "React SSR shell rendering failed. Sending 500 response.",
           error.underlyingError
