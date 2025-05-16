@@ -13,7 +13,7 @@
     }
   },
   "scripts": {
-    "build": "bun build --outdir dist --target node16 --format cjs,esm --types",
+    "build": "bun build ./src/index.ts --outdir ./dist",
     "test": "bun test"
   },
   "files": [
