@@ -41,6 +41,7 @@
   },
   "homepage": "https://github.com/81reap/react-effect#readme",
   "devDependencies": {
+    "@effect/platform-bun": "^0.65.4",
     "@types/bun": "latest",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5"
